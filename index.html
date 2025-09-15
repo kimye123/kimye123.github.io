@@ -2,159 +2,211 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>전자폐기물 재활용</title>
   <style>
-    body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
-    h1 { text-align: center; }
-    input, button { padding: 8px; margin: 5px; }
-    .keywords button {
-      margin: 4px;
-      padding: 6px 12px;
-      border: 1px solid #333;
-      border-radius: 16px;
-      cursor: pointer;
-      background: #fff;
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
     }
-    .keywords button.active {
-      background: #007BFF;
-      color: #fff;
+    /* 네비게이션 */
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    /* 검색창 */
+    .search-container {
+      text-align: center;
+      margin: 2rem 0;
+    }
+    input[type="text"] {
+      padding: 0.7rem;
+      width: 60%;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    /* 카드 레이아웃 */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
     }
     .card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       overflow: hidden;
       cursor: pointer;
+      transition: transform 0.2s;
     }
-    .card img { width: 100%; height: 200px; object-fit: cover; }
-    .card h3 { margin: 10px; }
-    .detail {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-top: 20px;
+    .card:hover {
+      transform: scale(1.05);
+    }
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .card h3 {
+      text-align: center;
+      padding: 1rem;
+      margin: 0;
+    }
+    /* 모달 팝업 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 20;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .modal-content {
+      background: white;
+      margin: 10% auto;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 500px;
+      text-align: center;
+    }
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #555;
+    }
+    /* 푸터 */
+    footer {
+      background: #333;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
-  <h1>전자폐기물 재활용</h1>
-  <p style="text-align:center;">검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
 
-  <div style="text-align:center;">
-    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 배터리">
-    <button onclick="resetSearch()">초기화</button>
+  <!-- 헤더 -->
+  <header>
+    <h1>전자폐기물 재활용</h1>
+    <nav>
+      <a href="#search">검색</a>
+      <a href="#resources">자원</a>
+      <a href="#about">소개</a>
+    </nav>
+  </header>
+
+  <!-- 검색 -->
+  <section id="search" class="search-container">
+    <h2>전자폐기물 검색</h2>
+    <input type="text" id="searchInput" placeholder="스마트폰, 배터리 등 입력...">
+  </section>
+
+  <!-- 카드 리스트 -->
+  <section class="grid" id="wasteList">
+    <!-- 카드들이 JS로 채워짐 -->
+  </section>
+
+  <!-- 모달 -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeModal">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <p id="modalInfo"></p>
+    </div>
   </div>
 
-  <div class="keywords" id="keywords" style="text-align:center;"></div>
+  <!-- 자원 섹션 -->
+  <section id="resources" style="padding:2rem;">
+    <h2>회수 가능한 자원</h2>
+    <ul>
+      <li>금 (Gold)</li>
+      <li>은 (Silver)</li>
+      <li>구리 (Copper)</li>
+      <li>팔라듐 (Palladium)</li>
+      <li>리튬 (Lithium)</li>
+    </ul>
+  </section>
 
-  <h2>검색 결과</h2>
-  <div class="grid" id="results"></div>
+  <!-- 소개 -->
+  <section id="about" style="padding:2rem;">
+    <h2>사이트 소개</h2>
+    <p>이 사이트는 전자폐기물 재활용 방법과 회수 가능한 자원을 알기 쉽게 보여주기 위해 제작되었습니다.</p>
+  </section>
 
-  <div id="detail"></div>
+  <!-- 푸터 -->
+  <footer>
+    © 2025 전자폐기물 재활용 | GitHub Pages
+  </footer>
 
   <script>
-    const DATA = [
-      {
-        id: 1,
-        name: "스마트폰 (Smartphone)",
-        keywords: ["스마트폰","휴대폰","폰","모바일"],
-        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200",
-        recyclingMethod: "배터리는 분리 배출하고, 내부 회로/모듈은 전문 재활용 업체에서 금속(금,은,구리 등)과 희토류를 회수합니다.",
-        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "희토류", "리튬 (Li)"]
-      },
-      {
-        id: 2,
-        name: "노트북 (Laptop)",
-        keywords: ["노트북","랩탑","컴퓨터"],
-        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200",
-        recyclingMethod: "배터리와 HDD/SSD를 분리하고, 메인보드에서 귀금속과 구리를 회수합니다.",
-        resources: ["구리 (Cu)", "금 (Au)", "은 (Ag)", "알루미늄 (Al)", "리튬 (Li)"]
-      },
-      {
-        id: 3,
-        name: "배터리 (Battery)",
-        keywords: ["배터리","리튬","Li-ion"],
-        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
-        recyclingMethod: "전문 업체로 안전하게 중화·재제조하고 리튬, 코발트, 니켈을 회수합니다.",
-        resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)"]
-      }
+    // 샘플 데이터
+    const wastes = [
+      { name: "스마트폰", img: "https://source.unsplash.com/400x300/?smartphone", info: "스마트폰은 배터리, 회로 기판에서 금속 회수가 가능합니다." },
+      { name: "노트북", img: "https://source.unsplash.com/400x300/?laptop", info: "노트북은 CPU, 메모리 칩, 배터리 등에서 희귀 금속을 회수할 수 있습니다." },
+      { name: "배터리", img: "https://source.unsplash.com/400x300/?battery", info: "리튬이온 배터리에서 리튬, 코발트, 니켈 등을 재활용할 수 있습니다." }
     ];
 
-    const searchInput = document.getElementById("search");
-    const resultsDiv = document.getElementById("results");
-    const detailDiv = document.getElementById("detail");
-    const keywordsDiv = document.getElementById("keywords");
-    let activeKeywords = [];
+    const wasteList = document.getElementById("wasteList");
+    const searchInput = document.getElementById("searchInput");
 
-    const allKeywords = [...new Set(DATA.flatMap(d => d.keywords))];
-    allKeywords.forEach(kw => {
-      const btn = document.createElement("button");
-      btn.textContent = kw;
-      btn.onclick = () => {
-        btn.classList.toggle("active");
-        if (activeKeywords.includes(kw)) {
-          activeKeywords = activeKeywords.filter(k => k !== kw);
-        } else {
-          activeKeywords.push(kw);
-        }
-        render();
-      };
-      keywordsDiv.appendChild(btn);
+    function renderCards(filter="") {
+      wasteList.innerHTML = "";
+      wastes
+        .filter(w => w.name.includes(filter))
+        .forEach(w => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="${w.img}" alt="${w.name}">
+            <h3>${w.name}</h3>
+          `;
+          card.onclick = () => openModal(w.name, w.info);
+          wasteList.appendChild(card);
+        });
+    }
+
+    function openModal(title, info) {
+      document.getElementById("modalTitle").innerText = title;
+      document.getElementById("modalInfo").innerText = info;
+      document.getElementById("modal").style.display = "block";
+    }
+
+    document.getElementById("closeModal").onclick = () => {
+      document.getElementById("modal").style.display = "none";
+    };
+
+    searchInput.addEventListener("input", (e) => {
+      renderCards(e.target.value);
     });
 
-    function matches(item) {
-      const q = searchInput.value.trim().toLowerCase();
-      const matchQuery = q === "" || item.name.toLowerCase().includes(q) || item.keywords.some(k => k.includes(q));
-      const matchKeywords = activeKeywords.length === 0 || activeKeywords.every(kw => item.keywords.includes(kw) || item.name.includes(kw));
-      return matchQuery && matchKeywords;
-    }
-
-    function render() {
-      resultsDiv.innerHTML = "";
-      detailDiv.innerHTML = "";
-      const results = DATA.filter(matches);
-      if (results.length === 0) {
-        resultsDiv.textContent = "검색 결과가 없습니다.";
-        return;
-      }
-      results.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<img src=\"${item.image}\"><h3>${item.name}</h3>`;
-        card.onclick = () => showDetail(item);
-        resultsDiv.appendChild(card);
-      });
-    }
-
-    function showDetail(item) {
-      detailDiv.innerHTML = `
-        <div class="detail">
-          <h2>${item.name}</h2>
-          <img src="${item.image}" style="width:200px;border-radius:10px;"><br><br>
-          <p><strong>재활용 방법:</strong> ${item.recyclingMethod}</p>
-          <h3>회수 가능한 자원</h3>
-          <ul>${item.resources.map(r => `<li>${r}</li>`).join("")}</ul>
-          <button onclick="detailDiv.innerHTML=''">닫기</button>
-        </div>
-      `;
-    }
-
-    function resetSearch() {
-      searchInput.value = "";
-      activeKeywords = [];
-      Array.from(keywordsDiv.children).forEach(btn => btn.classList.remove("active"));
-      render();
-    }
-
-    searchInput.addEventListener("input", render);
-    render();
+    renderCards(); // 초기 렌더링
   </script>
 </body>
 </html>
