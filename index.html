@@ -5,20 +5,22 @@
   <title>전자폐기물 재활용</title>
   <style>
     body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
-    h1 { text-align: center; }
     input, button { padding: 8px; margin: 5px; }
+    
+    /* 키워드 버튼 */
     .keywords button {
       margin: 4px;
       padding: 6px 12px;
       border: 1px solid #333;
       border-radius: 16px;
       cursor: pointer;
-      background: #fff;
+      background: #e0e0e0; /* 연한 회색 */
     }
     .keywords button.active {
       background: #007BFF;
       color: #fff;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -34,6 +36,7 @@
     }
     .card img { width: 100%; height: 200px; object-fit: cover; }
     .card h3 { margin: 10px; }
+
     .detail {
       background: #fff;
       padding: 20px;
@@ -41,103 +44,72 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-top: 20px;
     }
-    .detail img { margin-bottom: 15px; }
   </style>
 </head>
 <body>
-  <h1>전자폐기물 재활용</h1>
-  <p style="text-align:center;">검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
+  <!-- 맨 위 초록색 배경 -->
+  <div style="background-color:#28a745; color:white; text-align:center; padding:20px;">
+    <h1>전자폐기물 재활용</h1>
+    <p>검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
+  </div>
 
-  <div style="text-align:center;">
-    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 배터리">
+  <!-- 검색창 -->
+  <div style="text-align:center; margin-top:10px;">
+    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 프린터, 배터리">
     <button onclick="resetSearch()">초기화</button>
   </div>
 
+  <!-- 키워드 -->
   <div class="keywords" id="keywords" style="text-align:center;"></div>
 
+  <!-- 검색 결과 -->
   <h2>검색 결과</h2>
   <div class="grid" id="results"></div>
 
+  <!-- 상세보기 -->
   <div id="detail"></div>
 
   <script>
     const DATA = [
       {
         id: 1,
-        name: "스마트폰 (휴대전화)",
+        name: "스마트폰 (Smartphone)",
         keywords: ["스마트폰","휴대폰","폰","모바일"],
         image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200",
-        recyclingMethod: `1. 배터리를 분리해서 리튬·코발트를 뽑아요 → 전기차나 새 배터리에 재활용<br>
-2. 회로판(PCB)을 부수고 화학약품으로 금, 은, 구리, 팔라듐을 회수<br>
-3. 케이스나 액정은 플라스틱과 유리로 나눠서 재활용`,
-        resources: ["금(Au)", "은(Ag)", "구리(Cu)", "팔라듐(Pd)", "리튬(Li)", "코발트(Co)"],
-        homeTip: "사용 안 하는 스마트폰은 중고로 팔거나 수거함에 버리기. 배터리는 손상되지 않게 주의해서 배터리 전용 수거함에 버리기"
+        recyclingMethod: "배터리는 분리 배출하고, 내부 회로/모듈은 전문 재활용 업체에서 금속(금,은,구리 등)과 희토류를 회수합니다.",
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "희토류", "리튬 (Li)"]
       },
       {
         id: 2,
-        name: "노트북 / PC",
-        keywords: ["노트북","랩탑","컴퓨터","PC"],
+        name: "노트북 (Laptop)",
+        keywords: ["노트북","랩탑","컴퓨터"],
         image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200",
-        recyclingMethod: `1. CPU, 그래픽 카드, HDD, 메모리 따로 분리<br>
-2. 회로판 부수고 금, 은, 구리 추출<br>
-3. HDD 속 자석에서 네오디뮴 회수<br>
-4. 케이스 → 알루미늄, 플라스틱 재활용`,
-        resources: ["금", "은", "구리", "팔라듐", "알루미늄", "플라스틱", "네오디뮴"],
-        homeTip: "중고 판매하거나 전자제품 수거함 이용. HDD는 개인 정보 삭제 후 제출"
+        recyclingMethod: "배터리와 HDD/SSD를 분리하고, 메인보드에서 귀금속과 구리를 회수합니다.",
+        resources: ["구리 (Cu)", "금 (Au)", "은 (Ag)", "알루미늄 (Al)", "리튬 (Li)"]
       },
       {
         id: 3,
-        name: "TV / 모니터",
-        keywords: ["TV","모니터","LCD","LED","CRT"],
+        name: "배터리 (Battery)",
+        keywords: ["배터리","리튬","Li-ion"],
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
-        recyclingMethod: `* LCD/LED: 액정 분리 → 인듐 회수, 백라이트 수은 제거<br>
-* 구형 CRT TV: 납 유리·형광체 분리 후 처리<br>
-* 플라스틱·구리 회로 재활용`,
-        resources: ["금", "구리", "인듐", "유리", "플라스틱"],
-        homeTip: "대형 폐가전 수거 서비스 이용. CRT TV는 납 들어있어서 일반 쓰레기 금지"
+        recyclingMethod: "전문 업체로 안전하게 중화·재제조하고 리튬, 코발트, 니켈을 회수합니다.",
+        resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)"]
       },
       {
         id: 4,
-        name: "가전제품 (세탁기, 냉장고, 전자레인지 등)",
-        keywords: ["세탁기","냉장고","전자레인지","가전"],
-        image: "https://images.unsplash.com/photo-1590608897129-79b4d87fa5f5?q=80&w=1200",
-        recyclingMethod: `1. 모터 분리 → 구리 코일 회수<br>
-2. 케이스 → 철·알루미늄 재활용<br>
-3. 냉장고 냉매 제거 → 환경 보호<br>
-4. 플라스틱 부품 분류 후 재활용`,
-        resources: ["철", "알루미늄", "구리", "플라스틱"],
-        homeTip: "무상 방문 수거 서비스 신청. 냉매·프레온은 전문가가 처리"
+        name: "프린터 (Printer)",
+        keywords: ["프린터","인쇄기","프린팅"],
+        image: "https://images.unsplash.com/photo-1581093588401-95d1f9b5a5d8?q=80&w=1200",
+        recyclingMethod: "카트리지를 분리하고, 금속과 플라스틱 부품을 전문 재활용 업체에서 회수합니다.",
+        resources: ["플라스틱", "철 (Fe)", "알루미늄 (Al)"]
       },
       {
         id: 5,
-        name: "배터리 (휴대폰, 전기차 등)",
-        keywords: ["배터리","리튬","Li-ion","전기차"],
-        image: "https://images.unsplash.com/photo-1581092795360-ef7b1a9e37b2?q=80&w=1200",
-        recyclingMethod: "배터리를 잘게 부수고, 습식·건식 방법으로 금속 추출. 구리 호일, 흑연도 회수",
-        resources: ["리튬", "코발트", "니켈", "망간", "구리", "흑연"],
-        homeTip: "전용 수거함 이용. 손상된 배터리는 신문지로 감싸 안전하게 버리기"
-      },
-      {
-        id: 6,
-        name: "프린터 / 복사기",
-        keywords: ["프린터","복사기","토너"],
-        image: "https://images.unsplash.com/photo-1581090700220-41f88c1c45a3?q=80&w=1200",
-        recyclingMethod: `1. 전자회로 → 금속 회수<br>
-2. 외관 → 플라스틱 재활용<br>
-3. 토너 카트리지 → 재충전 또는 금속/플라스틱 분리`,
-        resources: ["금", "은", "구리", "팔라듐", "플라스틱"],
-        homeTip: "토너 카트리지는 전용 수거함. 고장 난 프린터는 지자체 수거함"
-      },
-      {
-        id: 7,
-        name: "조명 (LED, 형광등 등)",
-        keywords: ["LED","형광등","조명"],
-        image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1200",
-        recyclingMethod: `* 형광등 → 유리/알루미늄 분리, 수은 안전 처리<br>
-* LED → 반도체 칩에서 인듐, 갈륨, 희토류 회수<br>
-* 알루미늄 방열판 → 재활용`,
-        resources: ["희토류", "인듐", "갈륨", "알루미늄", "유리"],
-        homeTip: "지자체 지정 수거함 이용. 깨뜨리지 않기, LED 전구도 수거 가능"
+        name: "배터리 팩 (Battery Pack)",
+        keywords: ["배터리","충전지","리튬배터리"],
+        image: "https://images.unsplash.com/photo-1597764698650-0c7c142b3c64?q=80&w=1200",
+        recyclingMethod: "전문 업체로 안전하게 분리·중화하여 리튬과 니켈, 코발트를 회수합니다.",
+        resources: ["리튬 (Li)", "니켈 (Ni)", "코발트 (Co)"]
       }
     ];
 
@@ -191,11 +163,10 @@
       detailDiv.innerHTML = `
         <div class="detail">
           <h2>${item.name}</h2>
-          <img src="${item.image}" style="width:200px;border-radius:10px;"><br>
-          <p><strong>전문 공장 재활용:</strong><br>${item.recyclingMethod}</p>
+          <img src="${item.image}" style="width:200px;border-radius:10px;"><br><br>
+          <p><strong>재활용 방법:</strong> ${item.recyclingMethod}</p>
           <h3>회수 가능한 자원</h3>
           <ul>${item.resources.map(r => `<li>${r}</li>`).join("")}</ul>
-          <p><strong>집에서 할 수 있는 방법 / 주의:</strong><br>${item.homeTip}</p>
           <button onclick="detailDiv.innerHTML=''">닫기</button>
         </div>
       `;
