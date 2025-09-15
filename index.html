@@ -117,6 +117,16 @@
       }
     ];
 
+    const LOCS = [
+      {
+        name: "용인시 폐가전 수거센터",
+        lat: 0, // 진짜 위도 넣어야 지도 연동됨
+        lng: 0, // 진짜 경도 넣어야 지도 연동됨
+        address: "용인시 처인구 ○○동",
+        description: "용인시청 통해 신청 가능. E-순환거버넌스 방문 수거 서비스 운영 중."
+      }
+    ];
+
     const searchInput = document.getElementById("search");
     const resultsDiv = document.getElementById("results");
     const detailDiv = document.getElementById("detail");
@@ -176,37 +186,19 @@
       `;
     }
 
-    function resetSearch() {
-      searchInput.value = "";
-      activeKeywords = [];
-      Array.from(keywordsDiv.children).forEach(btn => btn.classList.remove("active"));
-      render();
+    function showLocationDetail(loc) {
+      detailDiv.innerHTML = `
+        <div class="detail">
+          <h2>${loc.name}</h2>
+          <p><strong>주소:</strong> ${loc.address}</p>
+          <p><strong>설명:</strong> ${loc.description}</p>
+          <button onclick="detailDiv.innerHTML=''">닫기</button>
+        </div>
+      `;
     }
-
-    searchInput.addEventListener("input", render);
-    render();
-
-    // ---------- 폐기 장소 위치 정보 ----------
-    const LOCS = [
-      {
-        name: "용인시 폐가전 수거센터",
-        lat: 0,  // ← 여기에 진짜 위도
-        lng: 0,  // ← 여기에 진짜 경도
-        address: "용인시 처인구 ○○동",
-        description: "용인시청 통해 신청 가능. E-순환거버넌스 방문 수거 서비스 운영 중."
-      }
-    ];
 
     function initMap() {
       const listDiv = document.getElementById("location-list");
       listDiv.innerHTML = "";
       LOCS.forEach(loc => {
-        const item = document.createElement("div");
-        item.className = "location-item";
-        item.textContent = loc.name;
-        item.onclick = () => showLocationDetail(loc);
-        listDiv.appendChild(item);
-      });
-
-      // 실제 지도는 API 연동 필요
-      const mapDiv = document.getElementById
+        const item = document.create
