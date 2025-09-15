@@ -117,7 +117,6 @@
     <h1>전자폐기물 재활용</h1>
     <nav>
       <a href="#search">검색</a>
-      <a href="#resources">자원</a>
       <a href="#about">소개</a>
     </nav>
   </header>
@@ -142,18 +141,6 @@
     </div>
   </div>
 
-  <!-- 자원 섹션 -->
-  <section id="resources" style="padding:2rem;">
-    <h2>회수 가능한 자원</h2>
-    <ul>
-      <li>금 (Gold)</li>
-      <li>은 (Silver)</li>
-      <li>구리 (Copper)</li>
-      <li>팔라듐 (Palladium)</li>
-      <li>리튬 (Lithium)</li>
-    </ul>
-  </section>
-
   <!-- 소개 -->
   <section id="about" style="padding:2rem;">
     <h2>사이트 소개</h2>
@@ -168,9 +155,9 @@
   <script>
     // 샘플 데이터
     const wastes = [
-      { name: "스마트폰", img: "https://source.unsplash.com/400x300/?smartphone", info: "스마트폰은 배터리, 회로 기판에서 금속 회수가 가능합니다." },
-      { name: "노트북", img: "https://source.unsplash.com/400x300/?laptop", info: "노트북은 CPU, 메모리 칩, 배터리 등에서 희귀 금속을 회수할 수 있습니다." },
-      { name: "배터리", img: "https://source.unsplash.com/400x300/?battery", info: "리튬이온 배터리에서 리튬, 코발트, 니켈 등을 재활용할 수 있습니다." }
+      { name: "스마트폰", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c21hcnRwaG9uZXx8fHx8fDE2OTY3NzA2NzQ&ixlib=rb-4.0.3&q=80&w=400", info: "스마트폰은 배터리, 회로 기판에서 금속 회수가 가능합니다." },
+      { name: "노트북", img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bGFwdG9wfHx8fHx8MTY5Njc3MDY4NA&ixlib=rb-4.0.3&q=80&w=400", info: "노트북은 CPU, 메모리 칩, 배터리 등에서 희귀 금속을 회수할 수 있습니다." },
+      { name: "배터리", img: "https://images.unsplash.com/photo-1581091012184-85f3c0f84961?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmF0dGVyeXx8fHx8fDE2OTY3NzA2OTc&ixlib=rb-4.0.3&q=80&w=400", info: "리튬이온 배터리에서 리튬, 코발트, 니켈 등을 재활용할 수 있습니다." }
     ];
 
     const wasteList = document.getElementById("wasteList");
