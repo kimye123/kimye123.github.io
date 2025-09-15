@@ -5,22 +5,20 @@
   <title>전자폐기물 재활용</title>
   <style>
     body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+    h1 { text-align: center; }
     input, button { padding: 8px; margin: 5px; }
-    
-    /* 키워드 버튼 수정: 연한 회색으로 변경 */
     .keywords button {
       margin: 4px;
       padding: 6px 12px;
       border: 1px solid #333;
       border-radius: 16px;
       cursor: pointer;
-      background: #e0e0e0; /* 흰색 -> 연한 회색 */
+      background: #fff;
     }
     .keywords button.active {
       background: #007BFF;
       color: #fff;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -36,7 +34,6 @@
     }
     .card img { width: 100%; height: 200px; object-fit: cover; }
     .card h3 { margin: 10px; }
-
     .detail {
       background: #fff;
       padding: 20px;
@@ -47,26 +44,19 @@
   </style>
 </head>
 <body>
-  <!-- 맨 위 초록색 배경 -->
-  <div style="background-color:#28a745; color:white; text-align:center; padding:20px;">
-    <h1>전자폐기물 재활용</h1>
-    <p>검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
-  </div>
+  <h1>전자폐기물 재활용</h1>
+  <p style="text-align:center;">검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
 
-  <!-- 검색창 -->
-  <div style="text-align:center; margin-top:10px;">
+  <div style="text-align:center;">
     <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 배터리">
     <button onclick="resetSearch()">초기화</button>
   </div>
 
-  <!-- 키워드 -->
   <div class="keywords" id="keywords" style="text-align:center;"></div>
 
-  <!-- 검색 결과 -->
   <h2>검색 결과</h2>
   <div class="grid" id="results"></div>
 
-  <!-- 상세보기 -->
   <div id="detail"></div>
 
   <script>
@@ -137,7 +127,7 @@
       results.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `<img src="${item.image}"><h3>${item.name}</h3>`;
+        card.innerHTML = `<img src=\"${item.image}\"><h3>${item.name}</h3>`;
         card.onclick = () => showDetail(item);
         resultsDiv.appendChild(card);
       });
