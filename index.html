@@ -1,136 +1,212 @@
-const DATA = [
-  {
-    id: 1,
-    name: "스마트폰 (휴대전화)",
-    keywords: ["스마트폰","휴대폰","폰","모바일"],
-    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>배터리를 분리 → 리튬·코발트 회수 → 새 배터리에 재활용</li>
-        <li>회로판 부수고 금, 은, 구리, 팔라듐 회수</li>
-        <li>케이스·액정 → 플라스틱/유리로 재활용</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>사용 안 하는 스마트폰은 중고 판매 또는 수거함에 버리기</li>
-        <li>배터리는 손상되지 않게 주의 → 전용 수거함</li>
-      </ul>
-    `,
-    resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "리튬 (Li)", "코발트 (Co)"]
-  },
-  {
-    id: 2,
-    name: "노트북 / PC",
-    keywords: ["노트북","랩탑","컴퓨터","PC"],
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>CPU, 그래픽 카드, HDD, 메모리 분리</li>
-        <li>회로판 부수고 금, 은, 구리 회수</li>
-        <li>HDD 자석에서 네오디뮴 회수</li>
-        <li>케이스 → 알루미늄, 플라스틱 재활용</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>중고 판매 또는 전자제품 수거함 사용</li>
-        <li>HDD → 개인 정보 삭제 후 제출</li>
-      </ul>
-    `,
-    resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "알루미늄 (Al)", "플라스틱", "네오디뮴"]
-  },
-  {
-    id: 3,
-    name: "TV / 모니터",
-    keywords: ["TV","모니터","액정","LCD","LED"],
-    image: "https://images.unsplash.com/photo-1585079543152-d6f73b36572f?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>LCD/LED: 액정 분리 → 인듐 회수, 백라이트 수은 제거</li>
-        <li>구형 CRT: 납 유리·형광체 분리 후 처리</li>
-        <li>플라스틱·구리 회로 재활용</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>대형 폐가전 수거 서비스 이용</li>
-        <li>CRT TV → 일반 쓰레기 금지</li>
-      </ul>
-    `,
-    resources: ["금 (Au)", "구리 (Cu)", "인듐 (In)", "유리", "플라스틱"]
-  },
-  {
-    id: 4,
-    name: "가전제품 (세탁기, 냉장고, 전자레인지 등)",
-    keywords: ["세탁기","냉장고","전자레인지","가전제품"],
-    image: "https://images.unsplash.com/photo-1591237751503-abbc7cc6b5c9?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>모터 분리 → 구리 코일 회수</li>
-        <li>케이스 → 철, 알루미늄 재활용</li>
-        <li>냉장고 냉매 제거 → 환경 보호</li>
-        <li>플라스틱 부품 분류 후 재활용</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>무상 방문 수거 서비스 신청</li>
-        <li>냉매·프레온은 전문가가 처리</li>
-      </ul>
-    `,
-    resources: ["철 (Fe)", "알루미늄 (Al)", "구리 (Cu)", "플라스틱"]
-  },
-  {
-    id: 5,
-    name: "배터리 (휴대폰, 전기차 등)",
-    keywords: ["배터리","리튬","Li-ion","전기차"],
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>배터리 잘게 부수고 습식·건식 방법으로 금속 추출</li>
-        <li>리튬, 코발트, 니켈, 구리, 흑연 회수</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>전용 수거함 이용</li>
-        <li>손상된 배터리 → 신문지로 감싸 안전하게 버리기</li>
-      </ul>
-    `,
-    resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)", "망간 (Mn)", "구리 (Cu)", "흑연"]
-  },
-  {
-    id: 6,
-    name: "프린터 / 복사기",
-    keywords: ["프린터","복사기","토너"],
-    image: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>전자회로 → 금속 회수</li>
-        <li>외관 → 플라스틱 재활용</li>
-        <li>토너 카트리지 → 재충전 또는 금속/플라스틱 분리</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>토너 카트리지는 전용 수거함</li>
-        <li>고장 난 프린터 → 지자체 수거함</li>
-      </ul>
-    `,
-    resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "플라스틱"]
-  },
-  {
-    id: 7,
-    name: "조명 (LED, 형광등 등)",
-    keywords: ["LED","형광등","전구","조명"],
-    image: "https://images.unsplash.com/photo-1597636333273-4f1c64a8d514?q=80&w=1200",
-    recyclingMethod: `
-      <ul>
-        <li>형광등 → 유리/알루미늄 분리, 수은 안전 처리</li>
-        <li>LED → 반도체 칩에서 인듐, 갈륨, 희토류 회수</li>
-        <li>알루미늄 방열판 → 재활용</li>
-      </ul>
-      <strong>집에서 할 수 있는 방법:</strong>
-      <ul>
-        <li>지자체 지정 수거함 이용</li>
-        <li>깨뜨리지 않기, LED 전구도 수거 가능</li>
-      </ul>
-    `,
-    resources: ["희토류", "인듐 (In)", "갈륨 (Ga)", "알루미늄 (Al)", "유리"]
-  }
-];
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>전자폐기물 재활용</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
+    h1 { text-align: center; }
+    input, button { padding: 8px; margin: 5px; }
+    .keywords button {
+      margin: 4px;
+      padding: 6px 12px;
+      border: 1px solid #333;
+      border-radius: 16px;
+      cursor: pointer;
+      background: #fff;
+    }
+    .keywords button.active {
+      background: #007BFF;
+      color: #fff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      cursor: pointer;
+      text-align: center;
+    }
+    .card img { width: 100%; height: 200px; object-fit: cover; }
+    .card h3 { margin: 10px; }
+    .detail {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-top: 20px;
+    }
+    .detail img { width: 300px; border-radius: 10px; }
+    .detail ul { margin-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>전자폐기물 재활용</h1>
+  <p style="text-align:center;">검색창에 입력하거나 아래 키워드를 눌러보세요.</p>
+
+  <div style="text-align:center;">
+    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 배터리">
+    <button onclick="resetSearch()">초기화</button>
+  </div>
+
+  <div class="keywords" id="keywords" style="text-align:center;"></div>
+
+  <h2>검색 결과</h2>
+  <div class="grid" id="results"></div>
+
+  <div id="detail"></div>
+
+  <script>
+    const DATA = [
+      {
+        id: 1,
+        name: "스마트폰 (휴대전화)",
+        keywords: ["스마트폰","휴대폰","폰","모바일"],
+        image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>배터리를 분리 → 리튬·코발트 회수 → 새 배터리에 재활용</li>
+            <li>회로판 부수고 금, 은, 구리, 팔라듐 회수</li>
+            <li>케이스·액정 → 플라스틱/유리로 재활용</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>중고 판매 또는 수거함에 버리기</li>
+            <li>배터리는 손상되지 않게 주의 → 전용 수거함</li>
+          </ul>
+        `,
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "리튬 (Li)", "코발트 (Co)"]
+      },
+      {
+        id: 2,
+        name: "노트북 / PC",
+        keywords: ["노트북","랩탑","컴퓨터","PC"],
+        image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>CPU, 그래픽 카드, HDD, 메모리 분리</li>
+            <li>회로판 부수고 금, 은, 구리 회수</li>
+            <li>HDD 자석에서 네오디뮴 회수</li>
+            <li>케이스 → 알루미늄, 플라스틱 재활용</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>중고 판매 또는 전자제품 수거함 사용</li>
+            <li>HDD → 개인 정보 삭제 후 제출</li>
+          </ul>
+        `,
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "알루미늄 (Al)", "플라스틱", "네오디뮴"]
+      },
+      {
+        id: 3,
+        name: "TV / 모니터",
+        keywords: ["TV","모니터","액정","LCD","LED"],
+        image: "https://images.unsplash.com/photo-1585079543152-d6f73b36572f?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>LCD/LED: 액정 분리 → 인듐 회수, 백라이트 수은 제거</li>
+            <li>구형 CRT: 납 유리·형광체 분리 후 처리</li>
+            <li>플라스틱·구리 회로 재활용</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>대형 폐가전 수거 서비스 이용</li>
+            <li>CRT TV → 일반 쓰레기 금지</li>
+          </ul>
+        `,
+        resources: ["금 (Au)", "구리 (Cu)", "인듐 (In)", "유리", "플라스틱"]
+      },
+      {
+        id: 4,
+        name: "가전제품 (세탁기, 냉장고, 전자레인지 등)",
+        keywords: ["세탁기","냉장고","전자레인지","가전제품"],
+        image: "https://images.unsplash.com/photo-1591237751503-abbc7cc6b5c9?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>모터 분리 → 구리 코일 회수</li>
+            <li>케이스 → 철, 알루미늄 재활용</li>
+            <li>냉장고 냉매 제거 → 환경 보호</li>
+            <li>플라스틱 부품 분류 후 재활용</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>무상 방문 수거 서비스 신청</li>
+            <li>냉매·프레온은 전문가가 처리</li>
+          </ul>
+        `,
+        resources: ["철 (Fe)", "알루미늄 (Al)", "구리 (Cu)", "플라스틱"]
+      },
+      {
+        id: 5,
+        name: "배터리 (휴대폰, 전기차 등)",
+        keywords: ["배터리","리튬","Li-ion","전기차"],
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>배터리 잘게 부수고 습식·건식 방법으로 금속 추출</li>
+            <li>리튬, 코발트, 니켈, 구리, 흑연 회수</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>전용 수거함 이용</li>
+            <li>손상된 배터리 → 신문지로 감싸 안전하게 버리기</li>
+          </ul>
+        `,
+        resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)", "망간 (Mn)", "구리 (Cu)", "흑연"]
+      },
+      {
+        id: 6,
+        name: "프린터 / 복사기",
+        keywords: ["프린터","복사기","토너"],
+        image: "https://images.unsplash.com/photo-1510511459019-5dda7724fd87?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>전자회로 → 금속 회수</li>
+            <li>외관 → 플라스틱 재활용</li>
+            <li>토너 카트리지 → 재충전 또는 금속/플라스틱 분리</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>토너 카트리지는 전용 수거함</li>
+            <li>고장 난 프린터 → 지자체 수거함</li>
+          </ul>
+        `,
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "플라스틱"]
+      },
+      {
+        id: 7,
+        name: "조명 (LED, 형광등 등)",
+        keywords: ["LED","형광등","전구","조명"],
+        image: "https://images.unsplash.com/photo-1597636333273-4f1c64a8d514?q=80&w=1200",
+        recyclingMethod: `
+          <ul>
+            <li>형광등 → 유리/알루미늄 분리, 수은 안전 처리</li>
+            <li>LED → 반도체 칩에서 인듐, 갈륨, 희토류 회수</li>
+            <li>알루미늄 방열판 → 재활용</li>
+          </ul>
+          <strong>집에서 할 수 있는 방법:</strong>
+          <ul>
+            <li>지자체 지정 수거함 이용</li>
+            <li>깨뜨리지 않기, LED 전구도 수거 가능</li>
+          </ul>
+        `,
+        resources: ["희토류", "인듐 (In)", "갈륨 (Ga)", "알루미늄 (Al)", "유리"]
+      }
+    ];
+
+    const searchInput = document.getElementById("search");
+    const resultsDiv = document.getElementById("results");
+    const detailDiv = document.getElementById("detail");
+    const keywordsDiv = document.getElementById("keywords");
+    let activeKeywords = [];
+
+    const allKeywords = [...new Set(DATA.flatMap(d => d.keywords))];
+    allKeywords.forEach(kw => {
+      const btn = document.createElement("button");
+      btn.textContent = kw;
