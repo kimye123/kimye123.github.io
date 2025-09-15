@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>전자폐기물 재활용 + 폐기 장소 찾기</title>
+  <title>전자폐기물 재활용</title>
   <style>
     body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
     h1 { text-align: center; }
@@ -41,29 +41,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin-top: 20px;
     }
-
-    #map-container {
-      margin-top: 40px;
-    }
-    #map {
-      width: 100%;
-      height: 400px;
-      border: 1px solid #ccc;
-    }
-    .location-list {
-      margin-top: 10px;
-    }
-    .location-item {
-      padding: 8px;
-      background: #fff;
-      margin-bottom: 5px;
-      border-radius: 6px;
-      cursor: pointer;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .location-item:hover {
-      background: #f0f0f0;
-    }
   </style>
 </head>
 <body>
@@ -81,13 +58,6 @@
   <div class="grid" id="results"></div>
 
   <div id="detail"></div>
-
-  <!-- 폐기 장소 지도 영역 -->
-  <div id="map-container">
-    <h2>폐기 장소 찾기 (경기도)</h2>
-    <div id="map"></div>
-    <div class="location-list" id="location-list"></div>
-  </div>
 
   <script>
     const DATA = [
@@ -114,16 +84,6 @@
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
         recyclingMethod: "전문 업체로 안전하게 중화·재제조하고 리튬, 코발트, 니켈을 회수합니다.",
         resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)"]
-      }
-    ];
-
-    const LOCS = [
-      {
-        name: "용인시 폐가전 수거센터",
-        lat: 0, // 진짜 위도 넣어야 지도 연동됨
-        lng: 0, // 진짜 경도 넣어야 지도 연동됨
-        address: "용인시 처인구 ○○동",
-        description: "용인시청 통해 신청 가능. E-순환거버넌스 방문 수거 서비스 운영 중."
       }
     ];
 
@@ -167,7 +127,7 @@
       results.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
-        card.innerHTML = `<img src="${item.image}"><h3>${item.name}</h3>`;
+        card.innerHTML = `<img src=\"${item.image}\"><h3>${item.name}</h3>`;
         card.onclick = () => showDetail(item);
         resultsDiv.appendChild(card);
       });
@@ -186,19 +146,15 @@
       `;
     }
 
-    function showLocationDetail(loc) {
-      detailDiv.innerHTML = `
-        <div class="detail">
-          <h2>${loc.name}</h2>
-          <p><strong>주소:</strong> ${loc.address}</p>
-          <p><strong>설명:</strong> ${loc.description}</p>
-          <button onclick="detailDiv.innerHTML=''">닫기</button>
-        </div>
-      `;
+    function resetSearch() {
+      searchInput.value = "";
+      activeKeywords = [];
+      Array.from(keywordsDiv.children).forEach(btn => btn.classList.remove("active"));
+      render();
     }
 
-    function initMap() {
-      const listDiv = document.getElementById("location-list");
-      listDiv.innerHTML = "";
-      LOCS.forEach(loc => {
-        const item = document.create
+    searchInput.addEventListener("input", render);
+    render();
+  </script>
+</body>
+</html>
