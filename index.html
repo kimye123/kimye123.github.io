@@ -1,199 +1,145 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>전자폐기물 재활용</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      background: #f9f9f9;
-      color: #333;
-    }
-    /* 네비게이션 */
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 1rem 2rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    nav a {
-      color: white;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    /* 검색창 */
-    .search-container {
-      text-align: center;
-      margin: 2rem 0;
-    }
-    input[type="text"] {
-      padding: 0.7rem;
-      width: 60%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-    }
-    /* 카드 레이아웃 */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-    }
-    .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-    }
-    .card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .card h3 {
-      text-align: center;
-      padding: 1rem;
-      margin: 0;
-    }
-    /* 모달 팝업 */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 20;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.6);
-    }
-    .modal-content {
-      background: white;
-      margin: 10% auto;
-      padding: 2rem;
-      border-radius: 12px;
-      width: 80%;
-      max-width: 500px;
-      text-align: center;
-    }
-    .close {
-      float: right;
-      font-size: 1.5rem;
-      cursor: pointer;
-      color: #555;
-    }
-    /* 푸터 */
-    footer {
-      background: #333;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-  </style>
-</head>
-<body>
+import React, { useState } from "react";
 
-  <!-- 헤더 -->
-  <header>
-    <h1>전자폐기물 재활용</h1>
-    <nav>
-      <a href="#search">검색</a>
-      <a href="#about">소개</a>
-    </nav>
-  </header>
+// 전자폐기물 재활용 - Single-file React component
+// 사용 방법: Vite / Create React App 프로젝트의 src/App.jsx에 붙여넣고 Tailwind를 설정하면 즉시 동작합니다.
 
-  <!-- 검색 -->
-  <section id="search" class="search-container">
-    <h2>전자폐기물 검색</h2>
-    <input type="text" id="searchInput" placeholder="스마트폰, 배터리 등 입력...">
-  </section>
+const SAMPLE_DATA = [
+  {
+    id: 1,
+    name: "스마트폰 (Smartphone)",
+    keywords: ["스마트폰", "휴대폰", "폰", "모바일"],
+    image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=3d5b2d4a0f8ae8b8a6b1e9c2b4a9aefa",
+    recyclingMethod:
+      "배터리는 분리 배출하고, 내부 회로/모듈은 전문 재활용 업체에서 분해 후 금속(금,은,구리 등)과 희토류를 회수합니다. 화면(유리)과 플라스틱은 별도 처리합니다.",
+    resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "희토류 (Rare earths)", "리튬 (Li)"]
+  },
+  {
+    id: 2,
+    name: "노트북 (Laptop)",
+    keywords: ["노트북", "랩탑", "컴퓨터"],
+    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=6b1f6a1e3b6a7a4a9b9f6b5c2a3c0d1e",
+    recyclingMethod:
+      "배터리와 HDD/SSD를 먼저 분리하고, 메인보드에서 귀금속과 구리를 회수합니다. 플라스틱 외함은 분쇄 후 재활용됩니다.",
+    resources: ["구리 (Cu)", "금 (Au)", "은 (Ag)", "알루미늄 (Al)", "리튬 (Li)"]
+  },
+  {
+    id: 3,
+    name: "배터리 (Battery)",
+    keywords: ["배터리", "리튬", "Li-ion"],
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop&ixlib=rb-4.0.3&s=8a2c6d6b2f4f3e9c6e5b4d3a2c1b0a9f",
+    recyclingMethod:
+      "전문 업체로 안전하게 분리·중화(또는 재제조)합니다. 리튬이온 배터리는 셀을 재활용하거나 원료를 회수합니다.",
+    resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)"]
+  }
+];
 
-  <!-- 카드 리스트 -->
-  <section class="grid" id="wasteList">
-    <!-- 카드들이 JS로 채워짐 -->
-  </section>
+export default function App() {
+  const [query, setQuery] = useState("");
+  const [activeKeywords, setActiveKeywords] = useState([]);
+  const [selected, setSelected] = useState(null);
 
-  <!-- 모달 -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close" id="closeModal">&times;</span>
-      <h2 id="modalTitle"></h2>
-      <p id="modalInfo"></p>
+  // 모든 키워드 버튼을 만들기 (샘플 데이터 기반)
+  const allKeywords = Array.from(
+    new Set(SAMPLE_DATA.flatMap((d) => d.keywords))
+  );
+
+  function toggleKeyword(kw) {
+    setActiveKeywords((prev) =>
+      prev.includes(kw) ? prev.filter((k) => k !== kw) : [...prev, kw]
+    );
+  }
+
+  function matches(item) {
+    const q = query.trim().toLowerCase();
+    const matchesQuery = q === "" || item.name.toLowerCase().includes(q) || item.keywords.some(k => k.includes(q));
+    const matchesKeywords = activeKeywords.length === 0 || activeKeywords.every(kw => item.keywords.includes(kw) || item.name.includes(kw));
+    return matchesQuery && matchesKeywords;
+  }
+
+  const results = SAMPLE_DATA.filter(matches);
+
+  return (
+    <div className="min-h-screen bg-gray-50 p-6 font-sans">
+      <div className="max-w-4xl mx-auto">
+        <header className="mb-6">
+          <h1 className="text-3xl font-bold mb-1">전자폐기물 재활용</h1>
+          <p className="text-gray-600">검색창에서 키워드를 입력하거나 아래 키워드 버튼을 눌러 전자폐기물을 찾아보세요.</p>
+        </header>
+
+        <section className="mb-6">
+          <div className="flex gap-2 mb-3">
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="예: 스마트폰, 노트북, 배터리"
+              className="flex-1 border rounded-md p-2 focus:outline-none focus:ring-2"
+            />
+            <button onClick={() => { setQuery(''); setActiveKeywords([]); setSelected(null);} } className="px-4 py-2 bg-gray-200 rounded-md">초기화</button>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {allKeywords.map((kw) => (
+              <button
+                key={kw}
+                onClick={() => toggleKeyword(kw)}
+                className={`px-3 py-1 rounded-full border ${activeKeywords.includes(kw) ? 'bg-blue-600 text-white' : 'bg-white text-gray-800'}`}
+              >
+                {kw}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <main>
+          <h2 className="text-xl font-semibold mb-3">검색 결과 ({results.length})</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {results.map((item) => (
+              <article key={item.id} className="bg-white shadow rounded-md overflow-hidden">
+                <button className="w-full text-left" onClick={() => setSelected(item)}>
+                  <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
+                  <div className="p-3">
+                    <h3 className="font-bold">{item.name}</h3>
+                    <p className="text-sm text-gray-500 mt-1">키워드: {item.keywords.join(', ')}</p>
+                  </div>
+                </button>
+              </article>
+            ))}
+
+            {results.length === 0 && (
+              <div className="col-span-full bg-white p-6 rounded-md shadow text-gray-600">검색 결과가 없습니다. 다른 키워드로 시도해보세요.</div>
+            )}
+          </div>
+
+          {/* 상세 보기 영역 */}
+          {selected && (
+            <section className="mt-6 bg-white shadow rounded-md p-4">
+              <div className="flex items-start gap-4">
+                <img src={selected.image} alt={selected.name} className="w-40 h-40 object-cover rounded-md" />
+                <div>
+                  <h3 className="text-2xl font-bold">{selected.name}</h3>
+                  <p className="text-gray-600 mt-2">{selected.recyclingMethod}</p>
+
+                  <h4 className="mt-4 font-semibold">회수 가능한 자원</h4>
+                  <ul className="list-disc ml-5 mt-2">
+                    {selected.resources.map((r, i) => (
+                      <li key={i}>{r}</li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-4">
+                    <button onClick={() => setSelected(null)} className="px-3 py-1 rounded-md border">닫기</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+        </main>
+
+        <footer className="mt-8 text-sm text-gray-500">
+          이 사이트는 데모용 샘플입니다. 실제 서비스를 만들려면 이미지 파일을 저장하고, 전자폐기물 데이터와 재활용 절차를 신뢰할 수 있는 출처로부터 업데이트하세요.
+        </footer>
+      </div>
     </div>
-  </div>
-
-  <!-- 소개 -->
-  <section id="about" style="padding:2rem;">
-    <h2>사이트 소개</h2>
-    <p>이 사이트는 전자폐기물 재활용 방법과 회수 가능한 자원을 알기 쉽게 보여주기 위해 제작되었습니다.</p>
-  </section>
-
-  <!-- 푸터 -->
-  <footer>
-    © 2025 전자폐기물 재활용 | GitHub Pages
-  </footer>
-
-  <script>
-    // 샘플 데이터
-    const wastes = [
-      { name: "스마트폰", img: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c21hcnRwaG9uZXx8fHx8fDE2OTY3NzA2NzQ&ixlib=rb-4.0.3&q=80&w=400", info: "스마트폰은 배터리, 회로 기판에서 금속 회수가 가능합니다." },
-      { name: "노트북", img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bGFwdG9wfHx8fHx8MTY5Njc3MDY4NA&ixlib=rb-4.0.3&q=80&w=400", info: "노트북은 CPU, 메모리 칩, 배터리 등에서 희귀 금속을 회수할 수 있습니다." },
-      { name: "배터리", img: "https://images.unsplash.com/photo-1581091012184-85f3c0f84961?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmF0dGVyeXx8fHx8fDE2OTY3NzA2OTc&ixlib=rb-4.0.3&q=80&w=400", info: "리튬이온 배터리에서 리튬, 코발트, 니켈 등을 재활용할 수 있습니다." }
-    ];
-
-    const wasteList = document.getElementById("wasteList");
-    const searchInput = document.getElementById("searchInput");
-
-    function renderCards(filter="") {
-      wasteList.innerHTML = "";
-      wastes
-        .filter(w => w.name.includes(filter))
-        .forEach(w => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <img src="${w.img}" alt="${w.name}">
-            <h3>${w.name}</h3>
-          `;
-          card.onclick = () => openModal(w.name, w.info);
-          wasteList.appendChild(card);
-        });
-    }
-
-    function openModal(title, info) {
-      document.getElementById("modalTitle").innerText = title;
-      document.getElementById("modalInfo").innerText = info;
-      document.getElementById("modal").style.display = "block";
-    }
-
-    document.getElementById("closeModal").onclick = () => {
-      document.getElementById("modal").style.display = "none";
-    };
-
-    searchInput.addEventListener("input", (e) => {
-      renderCards(e.target.value);
-    });
-
-    renderCards(); // 초기 렌더링
-  </script>
-</body>
-</html>
+  );
+}
