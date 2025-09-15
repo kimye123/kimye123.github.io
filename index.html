@@ -6,7 +6,7 @@
   <style>
     body { font-family: sans-serif; margin: 20px; background: #f5f5f5; }
     input, button { padding: 8px; margin: 5px; }
-    
+
     /* 키워드 버튼 */
     .keywords button {
       margin: 4px;
@@ -14,7 +14,7 @@
       border: 1px solid #333;
       border-radius: 16px;
       cursor: pointer;
-      background: #e0e0e0; /* 연한 회색 */
+      background: #e0e0e0;
     }
     .keywords button.active {
       background: #007BFF;
@@ -55,7 +55,7 @@
 
   <!-- 검색창 -->
   <div style="text-align:center; margin-top:10px;">
-    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 프린터, 배터리">
+    <input id="search" type="text" placeholder="예: 스마트폰, 노트북, 프린터, 배터리, 조명, 가전제품">
     <button onclick="resetSearch()">초기화</button>
   </div>
 
@@ -71,45 +71,58 @@
 
   <script>
     const DATA = [
+      // 기존 항목
       {
         id: 1,
         name: "스마트폰 (Smartphone)",
         keywords: ["스마트폰","휴대폰","폰","모바일"],
         image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1200",
-        recyclingMethod: "배터리는 분리 배출하고, 내부 회로/모듈은 전문 재활용 업체에서 금속(금,은,구리 등)과 희토류를 회수합니다.",
-        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "희토류", "리튬 (Li)"]
+        recyclingMethod: "배터리는 분리 배출, PCB(기판)는 금·은·구리·팔라듐 회수, 케이스·액정은 플라스틱·유리 분리.",
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "리튬 (Li)", "코발트 (Co)"]
       },
       {
         id: 2,
-        name: "노트북 (Laptop)",
+        name: "노트북 / PC (Laptop / PC)",
         keywords: ["노트북","랩탑","컴퓨터"],
         image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1200",
-        recyclingMethod: "배터리와 HDD/SSD를 분리하고, 메인보드에서 귀금속과 구리를 회수합니다.",
-        resources: ["구리 (Cu)", "금 (Au)", "은 (Ag)", "알루미늄 (Al)", "리튬 (Li)"]
+        recyclingMethod: "CPU, 그래픽카드, HDD, 메모리 분리 후 PCB 파쇄 → 금·은·구리 추출, 케이스 알루미늄·플라스틱 재활용.",
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "알루미늄 (Al)", "플라스틱", "네오디뮴 (Nd)"]
       },
       {
         id: 3,
         name: "배터리 (Battery)",
         keywords: ["배터리","리튬","Li-ion"],
         image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200",
-        recyclingMethod: "전문 업체로 안전하게 중화·재제조하고 리튬, 코발트, 니켈을 회수합니다.",
-        resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)"]
+        recyclingMethod: "전처리 → 파쇄/분리 → 리튬, 코발트, 니켈 추출.",
+        resources: ["리튬 (Li)", "코발트 (Co)", "니켈 (Ni)", "망간 (Mn)", "흑연"]
       },
       {
         id: 4,
-        name: "프린터 (Printer)",
-        keywords: ["프린터","인쇄기","프린팅"],
+        name: "프린터 / 복사기 (Printer / Copier)",
+        keywords: ["프린터","인쇄기","프린팅","복사기"],
         image: "https://images.unsplash.com/photo-1581093588401-95d1f9b5a5d8?q=80&w=1200",
-        recyclingMethod: "카트리지를 분리하고, 금속과 플라스틱 부품을 전문 재활용 업체에서 회수합니다.",
-        resources: ["플라스틱", "철 (Fe)", "알루미늄 (Al)"]
+        recyclingMethod: "전자회로 → 금·은·구리·팔라듐 회수, 외관 플라스틱 재활용, 토너 카트리지는 재충전/분리.",
+        resources: ["금 (Au)", "은 (Ag)", "구리 (Cu)", "팔라듐 (Pd)", "플라스틱"]
       },
+
+      // 조명
       {
         id: 5,
-        name: "배터리 팩 (Battery Pack)",
-        keywords: ["배터리","충전지","리튬배터리"],
-        image: "https://images.unsplash.com/photo-1597764698650-0c7c142b3c64?q=80&w=1200",
-        recyclingMethod: "전문 업체로 안전하게 분리·중화하여 리튬과 니켈, 코발트를 회수합니다.",
-        resources: ["리튬 (Li)", "니켈 (Ni)", "코발트 (Co)"]
+        name: "조명 (LED / 형광등)",
+        keywords: ["조명","LED","형광등","램프"],
+        image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200",
+        recyclingMethod: "형광등 → 유리·알루미늄 분리, 수은 회수, LED → 칩에서 인듐, 갈륨, 희토류 회수.",
+        resources: ["희토류", "인듐 (In)", "갈륨 (Ga)", "알루미늄 (Al)", "유리"]
+      },
+
+      // 가전제품
+      {
+        id: 6,
+        name: "가전제품 (세탁기, 냉장고, 전자레인지)",
+        keywords: ["가전제품","세탁기","냉장고","전자레인지"],
+        image: "https://images.unsplash.com/photo-1586201375761-83865001b9e4?q=80&w=1200",
+        recyclingMethod: "모터 분리 → 구리 코일 회수, 케이스 철·알루미늄 재활용, 냉장고 냉매 제거, 플라스틱 부품 분류 재활용.",
+        resources: ["철 (Fe)", "알루미늄 (Al)", "구리 (Cu)", "플라스틱"]
       }
     ];
 
@@ -119,6 +132,7 @@
     const keywordsDiv = document.getElementById("keywords");
     let activeKeywords = [];
 
+    // 키워드 버튼 생성
     const allKeywords = [...new Set(DATA.flatMap(d => d.keywords))];
     allKeywords.forEach(kw => {
       const btn = document.createElement("button");
@@ -135,6 +149,7 @@
       keywordsDiv.appendChild(btn);
     });
 
+    // 검색 조건 체크
     function matches(item) {
       const q = searchInput.value.trim().toLowerCase();
       const matchQuery = q === "" || item.name.toLowerCase().includes(q) || item.keywords.some(k => k.includes(q));
@@ -142,6 +157,7 @@
       return matchQuery && matchKeywords;
     }
 
+    // 검색 결과 렌더
     function render() {
       resultsDiv.innerHTML = "";
       detailDiv.innerHTML = "";
@@ -159,6 +175,7 @@
       });
     }
 
+    // 상세보기
     function showDetail(item) {
       detailDiv.innerHTML = `
         <div class="detail">
